@@ -1,0 +1,32 @@
+--- /home/ubuntu/kube-controller-manager.yaml.orig	2018-05-15 02:41:33.303879929 +0000
++++ kube-controller-manager.yaml	2018-05-15 02:50:22.177046407 +0000
+@@ -13,6 +13,8 @@
+   containers:
+   - command:
+     - kube-controller-manager
++    - --cloud-provider=openstack
++    - --cloud-config=/etc/kubernetes/cloud-config
+     - --leader-elect=true
+     - --use-service-account-credentials=true
+     - --cluster-signing-key-file=/etc/kubernetes/pki/ca.key
+@@ -37,6 +39,9 @@
+       requests:
+         cpu: 200m
+     volumeMounts:
++    - mountPath: /etc/kubernetes/cloud-config
++      name: cloud-config
++      readOnly: true
+     - mountPath: /etc/kubernetes/pki
+       name: k8s-certs
+       readOnly: true
+@@ -51,6 +56,10 @@
+   hostNetwork: true
+   volumes:
+   - hostPath:
++      path: /etc/kubernetes/cloud-config
++      type: FileOrCreate
++    name: cloud-config
++  - hostPath:
+       path: /etc/kubernetes/pki
+       type: DirectoryOrCreate
+     name: k8s-certs
