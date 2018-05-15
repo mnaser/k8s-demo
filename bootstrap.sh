@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# disable ipv6 (sorry)
-cat <<EOF | sudo tee /etc/sysctl.d/60-disable-ipv6.conf
-net.ipv6.conf.all.disable_ipv6 = 1
-net.ipv6.conf.default.disable_ipv6 = 1
-net.ipv6.conf.lo.disable_ipv6 = 1
-EOF
-sudo sysctl -p
-
 # add deps
 echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
